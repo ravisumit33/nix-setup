@@ -1,2 +1,3 @@
 # nix-setup
-My setup tools for nix based system
+
+To setup nix based system run `./bootstrap.sh`
