@@ -68,6 +68,16 @@ step "Updating dotfiles submodule..."
 git -C "$SCRIPT_DIR" submodule update --init --recursive
 ok "Submodules up to date"
 
+# --- oh-my-zsh ---
+info "oh-my-zsh"
+if [ -d "${ZSH:-$HOME/.oh-my-zsh}" ]; then
+  skip "Already installed"
+else
+  step "Installing oh-my-zsh..."
+  KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  ok "oh-my-zsh installed"
+fi
+
 # --- chezmoi ---
 info "chezmoi"
 step "Initializing (this will prompt for config values)..."
@@ -92,6 +102,8 @@ if [ -n "$(chezmoi status)" ]; then
       warn "Aborted. Run 'chezmoi apply' manually when ready."
       ;;
   esac
+else
+  skip "Already up to date – nothing to apply"
 fi
 
 # --- mise ---
