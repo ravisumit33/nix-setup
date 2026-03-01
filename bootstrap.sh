@@ -78,7 +78,7 @@ ok "chezmoi initialized"
 step "Previewing changes..."
 printf "\n"
 if [ -n "$(chezmoi status)" ]; then
-  chezmoi diff
+  chezmoi diff --pager cat
   printf "\n"
   printf "  ${YELLOW}${BOLD}Apply these changes? [y/N]${RESET} "
   read -r answer
