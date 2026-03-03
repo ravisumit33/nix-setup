@@ -106,6 +106,12 @@ else
   skip "Already up to date – nothing to apply"
 fi
 
+# --- sheldon ---
+info "sheldon"
+step "Locking plugins..."
+sheldon lock
+ok "Plugins locked"
+
 # --- mise ---
 info "mise"
 step "Installing tool versions..."
