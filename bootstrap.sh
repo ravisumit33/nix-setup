@@ -106,6 +106,16 @@ else
   skip "Already up to date – nothing to apply"
 fi
 
+# --- Claude Code ---
+info "Claude Code"
+if command -v claude >/dev/null 2>&1; then
+  skip "Already installed ($(claude --version))"
+else
+  step "Installing Claude Code..."
+  curl -fsSL https://claude.ai/install.sh | bash
+  ok "Claude Code installed"
+fi
+
 # --- sheldon ---
 info "sheldon"
 step "Locking plugins..."
