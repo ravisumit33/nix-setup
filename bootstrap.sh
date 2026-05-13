@@ -23,11 +23,11 @@ CHECK="${GREEN}✓${RESET}"
 SKIP="${YELLOW}⏭${RESET}"
 GEAR="${BLUE}⚙${RESET}"
 
-info()  { printf "${ARROW} ${BOLD}%s${RESET}\n" "$1"; }
-ok()    { printf "  ${CHECK}  %s\n" "$1"; }
-skip()  { printf "  ${SKIP}  ${DIM}%s${RESET}\n" "$1"; }
-warn()  { printf "  ${YELLOW}!  %s${RESET}\n" "$1"; }
-step()  { printf "  ${GEAR}  %s\n" "$1"; }
+info() { printf "${ARROW} ${BOLD}%s${RESET}\n" "$1"; }
+ok() { printf "  ${CHECK}  %s\n" "$1"; }
+skip() { printf "  ${SKIP}  ${DIM}%s${RESET}\n" "$1"; }
+warn() { printf "  ${YELLOW}!  %s${RESET}\n" "$1"; }
+step() { printf "  ${GEAR}  %s\n" "$1"; }
 
 # --- Banner ---
 printf "\n"
@@ -93,14 +93,14 @@ if [ -n "$(chezmoi status)" ]; then
   printf "  ${YELLOW}${BOLD}Apply these changes? [y/N]${RESET} "
   read -r answer
   case "$answer" in
-    [yY]|[yY][eE][sS])
-      step "Applying dotfiles..."
-      chezmoi apply
-      ok "Dotfiles applied"
-      ;;
-    *)
-      warn "Aborted. Run 'chezmoi apply' manually when ready."
-      ;;
+  [yY] | [yY][eE][sS])
+    step "Applying dotfiles..."
+    chezmoi apply
+    ok "Dotfiles applied"
+    ;;
+  *)
+    warn "Aborted. Run 'chezmoi apply' manually when ready."
+    ;;
   esac
 else
   skip "Already up to date – nothing to apply"
@@ -127,6 +127,17 @@ info "mise"
 step "Installing tool versions..."
 mise install
 ok "All tools installed"
+
+# --- LazyVim ---
+info "LazyVim"
+step "Clearing old nvim state..."
+rm -rf ~/.local/share/nvim.bak ~/.local/state/nvim.bak ~/.cache/nvim.bak
+[ -d ~/.local/share/nvim ] && mv ~/.local/share/nvim ~/.local/share/nvim.bak
+[ -d ~/.local/state/nvim ] && mv ~/.local/state/nvim ~/.local/state/nvim.bak
+[ -d ~/.cache/nvim ] && mv ~/.cache/nvim ~/.cache/nvim.bak
+step "Installing plugins (first run may take a minute)..."
+nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+ok "LazyVim plugins installed"
 
 # --- Done ---
 printf "\n"
