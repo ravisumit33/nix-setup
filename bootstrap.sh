@@ -130,6 +130,19 @@ ok "All tools installed"
 
 # --- LazyVim ---
 info "LazyVim"
+if [ ! -f ~/.config/nvim/init.lua ]; then
+  step "Adding LazyVim starter scaffolding..."
+  starter_tmp="$(mktemp -d)"
+  git clone --depth 1 https://github.com/LazyVim/starter "$starter_tmp"
+  rm -rf "$starter_tmp/.git"
+  mkdir -p ~/.config/nvim
+  # -n = no-clobber: never overwrite files chezmoi already applied
+  cp -Rn "$starter_tmp/." ~/.config/nvim/
+  rm -rf "$starter_tmp"
+  ok "Starter scaffolding in place"
+else
+  skip "init.lua already present – leaving nvim config untouched"
+fi
 step "Clearing old nvim state..."
 rm -rf ~/.local/share/nvim.bak ~/.local/state/nvim.bak ~/.cache/nvim.bak
 [ -d ~/.local/share/nvim ] && mv ~/.local/share/nvim ~/.local/share/nvim.bak
