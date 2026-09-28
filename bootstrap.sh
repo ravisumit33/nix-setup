@@ -106,14 +106,14 @@ else
   skip "Already up to date – nothing to apply"
 fi
 
-# --- Claude Code ---
-info "Claude Code"
-if command -v claude >/dev/null 2>&1; then
-  skip "Already installed ($(claude --version))"
+# --- Copilot CLI ---
+info "Copilot CLI"
+if command -v copilot >/dev/null 2>&1; then
+  skip "Already installed ($(copilot --version))"
 else
-  step "Installing Claude Code..."
-  curl -fsSL https://claude.ai/install.sh | bash
-  ok "Claude Code installed"
+  step "Installing Copilot CLI..."
+  curl -fsSL https://gh.io/copilot-install | bash
+  ok "Copilot CLI installed"
 fi
 
 # --- sheldon ---
